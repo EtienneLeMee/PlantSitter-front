@@ -3,7 +3,8 @@
         <ul>
             <li><a href="#">Home</a></li>
             <li><a href="#discover">Discover</a></li>
-            <li><a href="#spells">Spells</a></li>
+            <li><a href="#plants">Plants</a></li>
+            <li><a href="#account">Account</a></li>
         </ul>
     </nav>
   </template>
