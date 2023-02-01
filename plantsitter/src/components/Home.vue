@@ -3,10 +3,9 @@
         <img alt="Background Image" class="background" id="background" src="../assets/background.png">
         <div class="hero-wrapper">
             <div class="text">
-                <p class="subtitle">The best Harry Potter wiki online !</p>
-                <p class="title">Welcome to <b>Hogwarts</b></p>
-                <p class="desc">Here you can check every character and spell of the Harry Potter Universe. You will be able
-                    to see every character details and to add them to your favourites characters.   
+                <p class="subtitle">Faites garder vos plantes !</p>
+                <p class="title"><b>PlantSitter</b></p>
+                <p class="desc">Suivez nos conseils d'entretien, laissez vos plantes à des passionnés durant vos vacances, ayez des nouvelles régulières !
                 </p>
                 <a href="#characters"><button class="check">Check this out !</button></a>
             </div>
