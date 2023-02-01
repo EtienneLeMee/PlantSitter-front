@@ -7,7 +7,7 @@
                 <p class="title"><b>PlantSitter</b></p>
                 <p class="desc">Suivez nos conseils d'entretien, laissez vos plantes à des passionnés durant vos vacances, ayez des nouvelles régulières !
                 </p>
-                <a href="#characters"><button class="check">Check this out !</button></a>
+                <a href="#characters"><button class="check">Voir les plantes !</button></a>
             </div>
         </div>
     </div>
