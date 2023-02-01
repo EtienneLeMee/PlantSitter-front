@@ -185,9 +185,10 @@
             </table>
         </div>
     </div>
+    
 </template>
 
-<script type="text/javascript" src="map.js"></script>
+<!--script type="text/javascript" src="../map.js"></script-->
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
