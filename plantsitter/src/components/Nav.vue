@@ -2,7 +2,7 @@
     <nav>
         <ul>
             <li><a href="#">Home</a></li>
-            <li><a href="#characters">Characters</a></li>
+            <li><a href="#discover">Discover</a></li>
             <li><a href="#spells">Spells</a></li>
         </ul>
     </nav>
