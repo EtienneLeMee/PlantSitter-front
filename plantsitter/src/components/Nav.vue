@@ -1,5 +1,7 @@
 <template>
     <nav>
+        <img style="height:20px; margin-block:20px;" src="../assets/logotxt.png">
+        
         <ul>
             <li><a href="#">Home</a></li>
             <li><a href="#discover">Discover</a></li>
@@ -22,7 +24,13 @@
   
   <!-- Add "scoped" attribute to limit CSS to this component only -->
   <style scoped>
-
+nav{
+  display: flex;
+  width: 100%;
+  height: 40px;
+  justify-content: space-around;
+  align-items: center;
+}
 ul {
     list-style-type: none;
     margin: 0;
