@@ -11,16 +11,16 @@
 
 <script>
 // @ is an alias to /src
-import Home from '@/components/Home.vue'
+import Discover from '@/components/Discover.vue'
 import Nav from '@/components/Nav.vue'
 
 export default {
-  name: 'HomeView',
+  name: 'DiscoverView',
   components: {
-    Home,
+    Discover,
     Nav
   },
-  title:'Hog'
+  title:'Dis'
 }
 </script>
 
