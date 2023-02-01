@@ -2,8 +2,11 @@
     <div class="discover">
         <Discover />
     </div>
+    <!--div class="map">
+      <Map />
+    </div-->
     <div class="nav">
-        <Nav />
+      <Nav />
     </div>
 
     <title>Hogwarts Wiki</title>
@@ -13,12 +16,14 @@
 // @ is an alias to /src
 import Discover from "@/components/Discover.vue";
 import Nav from "@/components/Nav.vue";
+//import Map from "@/components/Leaflet.vue";
 
 export default {
     name: "DiscoverView",
     components: {
-        Discover,
         Nav,
+        //Map,
+        Discover
     },
     title: "Dis",
 };
