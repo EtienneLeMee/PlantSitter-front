@@ -1,4 +1,4 @@
-var x = document.getElementById("demo");
+/* var x = document.getElementById("demo");
 navigator.geolocation.getCurrentPosition(showPosition);
 var positionIcon = L.icon({
     iconUrl: 'images/position-icon.png',
@@ -103,3 +103,4 @@ function markerOnClick(e){
 }
 
 
+ */
