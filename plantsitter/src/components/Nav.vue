@@ -44,7 +44,8 @@ ul {
 
   li a {
     display: block;
-    color: #666;
+    color: #5EB563;
+    font-weight: 500;
     text-align: center;
     padding: 14px 25px;
     text-decoration: none;

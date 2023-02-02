@@ -92,6 +92,11 @@
         background-color: #FCFCFC;
         border-radius: 20px;
         box-shadow: 2px 4px 2px 0px rgba(0,0,0,0.20);
+        transition: all .2s ease-in-out; 
+    }
+
+    .card:hover { 
+    transform: scale(1.05); 
     }
 
     .date {
