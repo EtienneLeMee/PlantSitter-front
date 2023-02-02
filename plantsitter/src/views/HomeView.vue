@@ -13,12 +13,14 @@
 // @ is an alias to /src
 import Home from '@/components/Home.vue'
 import Nav from '@/components/Nav.vue'
+import PlantItem from '@/components/PlantItem.vue'
 
 export default {
   name: 'HomeView',
   components: {
     Home,
-    Nav
+    Nav,
+    PlantItem
   },
   title:'Hog'
 }
