@@ -23,15 +23,25 @@
                     <input type="time" name="heureFin" class="heureFin" id="heureFin" placeholder="Heure de fin">
                 </div>
                 <br>
-                <div class="label-container">
+                <div class="fileContainer">
                     <label for="file" class="label-file">Ajoutez une photo</label>
-                    <label class="label-plantes" v-on:click="openModal">Choisissez vos plantes</label>
+                    <input type="file" name="titre" class="input-file" id="file" placeholder="Le nom de mes plantes" accept="image/jpeg, image/png" @change="addImage">
+                    <div class="imageContainer">
+                        <img src="" class="affichage-image" id="affichage-image">
+                    </div>
                 </div>
-               
-                <input type="file" name="titre" class="input-file" id="file" placeholder="Le nom de mes plantes" accept="image/jpeg, image/png" @change="addImage">
-                <img src="" class="affichage-image" id="affichage-image">
-                
-                <a href="#characters"><button class="check">Voir les plantes !</button></a>
+                <br>
+                <div class="fileContainer">
+                    <label class="label-file" v-on:click="openModal">Choisissez vos plantes</label>
+                    <div class="imageContainer">
+                        <p class="nbPlantes" v-if="plantesSelected.length > 0">{{ plantesSelected.length }} plantes sélectionnées</p>
+                    </div>
+                </div>
+                <br>
+                <div class="check-container">
+                    <button class="check" v-on:click="addPublication">Créer ma demande</button>
+                    <p class="disable" id="disable">Veuillez remplir tous les champs !</p>
+                </div>               
             </div>
         </div>
     </div>
@@ -74,7 +84,8 @@
     data() {
         return {
         plantes: null,
-        plantesSelected: []
+        plantesSelected: [],
+        requestResult: null,
         };
     },
     methods: {
@@ -85,20 +96,50 @@
                     config
                 );
                 this.plantes = responseChar.data;
-                console.log(responseChar.data)
             } catch (error) {
-                console.log(error);
+
             }
         },
         addPublication: function () {
-            const publication = {
-                dateDebut: "2023-02-02", 
-                dateFin: "2023-02-03",
-                titre: "Test insert",
-                description: "Description insert",
-            };
-            axios.post("http://127.0.0.1:8000/apit/publication/", publication)
-                .then(response => this.articleId = response.data.id);
+            if(document.getElementById('description').value == '' || document.getElementById('titre').value == '' || document.getElementById('heureDebut').value == '' || document.getElementById('heureFin').value == '' || document.getElementById('dateDebut').value == '' || document.getElementById('dateFin').value == '' || this.plantesSelected.length == 0 || document.getElementById('file').value == ''){
+                document.getElementById('disable').style.display = 'block'
+            } else {
+                document.getElementById('disable').style.display = 'none'
+                let formData = new FormData();
+                formData.append('image', document.getElementById('file').files[0], 'test.png');
+                formData.append('dateDebut',  document.getElementById('dateDebut').value);
+                formData.append('dateFin',  document.getElementById('dateFin').value);
+                formData.append('titre',  document.getElementById('titre').value);
+                formData.append('description',  document.getElementById('description').value);
+                formData.append('heureDebut',  document.getElementById('heureDebut').value);
+                formData.append('heureFin',  document.getElementById('heureFin').value);
+                formData.append('plante',  this.plantesSelected);
+                formData.append('idCreateur', 2);
+                formData.append('idAccepteur', 3);
+
+                
+
+                const publication = {
+                    dateDebut: document.getElementById('dateDebut').value, 
+                    dateFin: document.getElementById('dateFin').value,
+                    titre: document.getElementById('titre').value,
+                    description: document.getElementById('description').value,
+                    heureDebut: document.getElementById('heureDebut').value,
+                    heureFin: document.getElementById('heureFin').value,
+                    plante: this.plantesSelected,
+                    idCreateur: 2,
+                    idAccepteur: 3,
+                    image: document.getElementById('file').files[0]
+                };
+                const api = axios.create({
+                    headers: {
+                    'Content-Type': 'multipart/form-data'
+                    }
+                })
+                api.post("http://127.0.0.1:8000/apit/publication/", formData)
+                    .then(response => this.requestResult = response.data.id);
+                document.location.href='http://localhost:5173/#/'; 
+            }
         },
         addPlante(element) {
             //Si la plante a déjà été sélectionnée
@@ -195,11 +236,12 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        background: #f4f4f4;
     }
 
     .text {
         width: 500px;
-        height: 80vh;
+        height: 85vh;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -245,7 +287,7 @@
 
     input[type='date']{
         all: unset;
-        background-color: #FCFCFC;
+        background-color: #f4f4f4;
         border-radius: 5px;
         padding: 10px;
         font-size: 12px;
@@ -254,7 +296,7 @@
 
     input[type='time']{
         all: unset;
-        background-color: #FCFCFC;
+        background-color: #f4f4f4;
         border-radius: 5px;
         padding: 9px;
         font-size: 12px;
@@ -264,9 +306,9 @@
 
     textarea {
         all: unset;
-        width: 90%;
+        width: 85%;
         height: 100px;
-        background-color: #FCFCFC;
+        background-color: #f4f4f4;
         border-radius: 5px;
         padding: 10px;
         font-size: 12px;
@@ -280,8 +322,8 @@
 
     input[type='text']{
         all: unset;
-        width: 90%;
-        background-color: #FCFCFC;
+        width: 85%;
+        background-color: #f4f4f4;
         border-radius: 5px;
         padding: 10px;
         font-size: 12px;
@@ -293,9 +335,15 @@
         font-family: 'Inter', sans-serif;
     }
 
+    .check-container {
+        width: 90%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
     .check {
         all: unset;
-        margin-top: 30px;
         text-align: center;
         border: 1px solid #5EB563;
         color: #fff;
@@ -306,36 +354,67 @@
         transition: all 0.3s ease-in-out;
         padding: 10px;
         background-color: #5EB563;
-        justify-self: flex-end;
         font-family: 'Inter', sans-serif;
         font-weight: 600;
+
     }
 
-    .check:hover {
-        transform: translateY(-5px);
-    } 
+    .disable {
+        padding: 10px;
+        background-color: darkred;
+        font-size: 12px;
+        color: white;
+        align-self: flex-start;
+        display: none;
+    }
+
+
 
     .label-file {
         cursor: pointer;
-        color: #5EB563;
+        color: #fff;
         font-weight: bold;
-        margin-left: 0;
+        height: 35px;
+        width: 150px;
+        background-color: #5EB563;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px 0px 0px 5px;
     }
-    .label-file:hover {
-        color: #5EB563;
+
+    .fileContainer {
+        width: 90%;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-self: flex-start;
+    }
+
+    .imageContainer {
+        width: 300px;
+        height: 40px;
+        border-radius: 0px 5px 5px 0px;
+        background-color: #f4f4f4;
+        display: flex;
+        align-items: center;
     }
 
     .input-file {
         display: none;
     }
 
+    .nbPlantes {
+        font-size: 12px;
+        margin-left: 10px;
+    }
+
     .affichage-image {
-        width: 70px;
+        height: 40px;
         align-self: flex-start;
         margin-left: 5%;
         max-height: 70px;
-        position: absolute;
-        margin-top: 380px;
     }
 
     .label-plantes {
@@ -433,7 +512,7 @@
 .plante-container {
     width: 190px;
     height: 90px;
-    background-color: #f0f0f0;
+    background-color: #f4f4f4;
     border-radius: 15px;
     justify-self: center;
     cursor: pointer;
