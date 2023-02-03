@@ -111,6 +111,18 @@ export default {
         });
     },
 
+    addConseil: function() {
+      const self = this;
+      axios
+        .post(apiURL+"conseil", config)
+        .then(function(response) {
+            self.conseils = response.data;
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
+    },
+
 
 
     openModal(idModal, plant) {
