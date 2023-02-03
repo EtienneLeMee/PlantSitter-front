@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import DiscoverView from '../views/DiscoverView.vue'
 import PlantsView from '../views/PlantsView.vue'
 import DemandView from '../views/DemandView.vue'
+import AccountView from '../views/AccountView.vue'
 
 const routes = [
   {
@@ -12,10 +13,10 @@ const routes = [
     meta: { title: 'About - MyApp' }
   },
   {
-    path: '/discover',
-    name: 'discover',
-    component: DiscoverView,
-    meta: { title: 'Discover - MyApp' }
+    path: '/account',
+    name: 'account',
+    component: AccountView,
+    meta: { title: 'Account - MyApp' }
   },
   {
     path: '/demande',
