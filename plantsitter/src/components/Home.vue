@@ -1,33 +1,70 @@
+
 <template>
     <div class="wrapper">
-        <img alt="Background Image" class="background" id="background" src="../assets/background.png">
+
+        
+
+        <!--<img alt="Background Image" class="background" id="background" src="../assets/background.png">-->
         <div class="hero-wrapper">
-            <div class="text">
-                <p class="subtitle">Faites garder vos plantes !</p>
-                <p class="title"><b>PlantSitter</b></p>
-                <p class="desc">Suivez nos conseils d'entretien, laissez vos plantes à des passionnés durant vos vacances, ayez des nouvelles régulières !
+            <div class="content">
+                <!--<p class="subtitle">Faites garder vos plantes !</p>-->
+                <p class="title"><b>Accueil</b></p>
+
+                <ul class="list-plantitem">
+                    <li v-for="item in items" :key="item.message">
+                        <div class="plantitem">
+                            <PlantItem :title="item.title" :date="item.date" :user="item.user" :desc="item.desc" :img="item.img" :phone="item.phone"/>
+                        </div>
+                    </li>
+                </ul>
+                
+                
+                <!--<p class="desc">Suivez nos conseils d'entretien, laissez vos plantes à des passionnés durant vos vacances, ayez des nouvelles régulières !
                 </p>
-                <a href="#characters"><button class="check">Voir les plantes !</button></a>
+                <a href="#characters"><button class="check">Voir les plantes !</button></a>-->
             </div>
         </div>
     </div>
+    
   </template>
   
   <script>
+  import PlantItem from '@/components/PlantItem.vue'
+  
+  /*methods: {
+    addNewTodo: function () {
+      this.todos.push({
+        id: this.nextTodoId++,
+        title: this.newTodoText
+      })
+      this.newTodoText = ''
+    }
+  }*/
+
+
   export default {
     name: 'Home',
+    components: {
+    PlantItem
+  },
+    data () {
+    return{
+        parentMessage: 'Parent',
+        items: [
+        { title: 'Plant de rose 5L', date: '30/01/2023 19:50 - 31/01/2023 22:00', user:'Alain Chabat', desc: 'Je recherche quelqu’un susebtible de pouvoir garder mes plantes 1 soir du 30 au 31', img:'https://cdn.pixabay.com/photo/2013/08/22/19/18/flowers-174817_960_720.jpg',phone:'0663987568'},
+        { title: 'Agapanthe 6mois', date: '03/02/2023 10:00 - 07/02/2023 10:00', user:'Francis Ngannou', desc: 'Je pars en week-end j’aurais besoin de quelqu’un pour arroser ma plante', img:'https://cdn.pixabay.com/photo/2019/06/17/08/24/pastel-4279379_960_720.jpg',phone:'0789645236'},
+        ],}
+            },
     props: {
       msg: String
     }
   }
-
-
-  
   </script>
   
   
   <!-- Add "scoped" attribute to limit CSS to this component only -->
   <style scoped>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap%27');
 
   a {
     all: unset;
@@ -39,6 +76,35 @@
         justify-content: center;
         align-content: center;
     }
+
+    .hero-wrapper {
+        display: flex;
+        width:80%;
+        min-width: 500px;
+        max-width: 2000px;
+        height: 100vh;
+        background-color: white;
+        left: 0;
+        margin-top: 50px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+
+    .list-plantitem {
+        list-style: none;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+    }
+
+    .plantitem {
+        margin-block: 20px;
+    }
     
     .background {
         height: 100vh;
@@ -48,44 +114,37 @@
         z-index: 2;
     }
 
-    .hero-wrapper {
-        position: absolute;
-        width: calc(100vw - 100vh) !important;
-        height: 100vh;
-        background-color: white;
-        right: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-    }
 
-    .text {
-        width: 500px;
+    .content {
+        width: 100%;
         height: 500px;
         display: flex;
         justify-content: center;
-        align-items: flex-end;
+        align-items: flex-start;
         flex-direction: column;
     }
 
     .subtitle {
+        font-family: 'Inter', sans-serif;
         font-size: 16px;
-        text-align: right;
+        text-align: left;
     }
 
     .title {
-        font-size: 50px;
-        align-self: center;
-        width: 500px;
-        text-align: right;
-        margin: 15px;
+        font-family: 'Inter', sans-serif;
+        font-size: 20px;
+        width: fit-content;
+        height: fit-content;
+        text-align: left;
+        left: 0;
+        margin-block: 15px;
     }
 
     .desc {
+        font-family: 'Inter', sans-serif;
         font-size: 12px;
         width: 400px;
-        text-align: right;
+        text-align: left;
     }
 
     .check {
