@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-      <Home/>
+      <Account/>
     </div>
     <div class="nav">
       <Nav/>
@@ -11,16 +11,16 @@
   
   <script>
   // @ is an alias to /src
-  import Home from '@/components/Home.vue'
+  import Account from '@/components/Account.vue'
   import Nav from '@/components/Nav.vue'
-  import PlantItem from '@/components/PlantItem.vue'
+  import AccountBlock from '@/components/AccountBlock.vue'
   
   export default {
     name: 'AccountView',
     components: {
-      Home,
+      Account,
       Nav,
-      PlantItem
+      AccountBlock
     },
     title:'Hog'
   }
