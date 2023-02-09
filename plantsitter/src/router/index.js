@@ -26,7 +26,7 @@ const routes = [
   {
     path: '/plants',
     name: 'plants',
-    component: ListPlants,
+    component: ListPlantsView,
     meta: { title: 'Plants - MyApp' }
   },
   {
