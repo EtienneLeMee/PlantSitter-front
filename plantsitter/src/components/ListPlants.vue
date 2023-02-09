@@ -46,8 +46,9 @@
               <h3>Description :</h3>
               <input type="text" class="descriptionConseil" id="descriptionConseil">
               <h3>Images :</h3>
-              <input type="text" class="imageConseil" id="imageConseil">
-              <input type="button" class="addConsButton" value="Valider" @click="; closeModal('myModalInsert'); openModal('myModalShow',idPlant)">
+              <input type="file" class="imageConseil" id="imageConseil">
+              <img id="affichage-image">
+              <input type="button" class="addConsButton" value="Valider" @click="addConseil(); closeModal('myModalInsert'); openModal('myModalShow',idPlant)">
             </div>
         </div>
     </div>
@@ -111,19 +112,30 @@ export default {
         });
     },
 
-    addConseil: function() {
-      const self = this;
-      axios
-        .post(apiURL+"conseil", config)
-        .then(function(response) {
-            self.conseils = response.data;
-        })
-        .catch(function(error) {
-            console.log(error);
-        });
+    addImage() {
+      let imgInp = document.getElementById('imageConseil')
+      const [file] = imgInp.files
+      if (file) {
+        document.getElementById('affichage-image').src = URL.createObjectURL(file)
+      }
     },
 
-
+    addConseil : function() {
+      const self = this
+      let formData = new FormData();
+      formData.append('titre', document.getElementById('titreConseil').files[0], 'test.png');
+      formData.append('description',  document.getElementById('descriptionConseil').value);
+      formData.append('dateFin',  document.getElementById('dateFin').value);
+      formData.append('image',  document.getElementById('imageConseil').value);
+      formData.append('idPlante',  self.idPlant);
+      const api = axios.create({
+        headers: {
+        'Content-Type': 'multipart/form-data'
+        }
+      })
+      api.post("http://127.0.0.1:8000/apit/conseil/", formData)
+        .then(response => this.requestResult = response.data.id)
+      },
 
     openModal(idModal, plant) {
       const self = this
