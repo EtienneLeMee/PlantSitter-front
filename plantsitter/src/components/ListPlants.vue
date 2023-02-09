@@ -19,14 +19,21 @@
               <div class = "infoPlant">
                 <h1>{{ plant.nom }}</h1>
                 <h3>{{ plant.nomScientifique }}</h3><br>
-                <!-- <h2>Les Conseils</h2>
+                <h2>Les Conseils</h2>
                 <div class="lesConseils">
                   <template v-for="unConseil in conseils">
                     <template v-if="unConseil.idPlante == idPlant">
-                      <input class="unConseil" type="text" v-model="unConseil.titre" disabled>
+                      <div class="unConseil">
+                        <img :src="unConseil.image" class="imgObj">
+                        <h3>Intitulé :</h3>
+                        <input type="text" v-model="unConseil.titre" disabled>
+                        <br>
+                        <h3>Description :</h3>
+                        <input type="text" v-model="unConseil.description" disabled>
+                      </div>
                     </template>
                   </template>
-                </div> -->
+                </div>
               </div>
               <button class="addConsButton" @click="closeModal('myModalShow'); openModal('myModalInsert',idPlant)">
                 <p class="iconButton">+</p>
@@ -48,7 +55,7 @@
               <h3>Images :</h3>
               <input type="file" class="imageConseil" id="imageConseil">
               <img id="affichage-image">
-              <input type="button" class="addConsButton" value="Valider" @click="addConseil(); closeModal('myModalInsert'); openModal('myModalShow',idPlant)">
+              <input type="button" class="addConsButton" value="Valider" @click="addConseil(); closeModal('myModalInsert')">
             </div>
         </div>
     </div>
@@ -120,13 +127,12 @@ export default {
       }
     },
 
-    addConseil : function() {
+    addConseil() {
       const self = this
       let formData = new FormData();
-      formData.append('titre', document.getElementById('titreConseil').files[0], 'test.png');
+      formData.append('titre', document.getElementById('titreConseil').value);
       formData.append('description',  document.getElementById('descriptionConseil').value);
-      formData.append('dateFin',  document.getElementById('dateFin').value);
-      formData.append('image',  document.getElementById('imageConseil').value);
+      formData.append('image',  document.getElementById('imageConseil').files[0], 'test.png');
       formData.append('idPlante',  self.idPlant);
       const api = axios.create({
         headers: {
@@ -134,8 +140,11 @@ export default {
         }
       })
       api.post("http://127.0.0.1:8000/apit/conseil/", formData)
-        .then(response => this.requestResult = response.data.id)
-      },
+        .then(response => self.requestResult = response.data.id)
+        document.getElementById('titreConseil').value = ''
+        document.getElementById('descriptionConseil').value = ''
+        document.getElementById('imageConseil').value = ''
+    },
 
     openModal(idModal, plant) {
       const self = this
@@ -151,9 +160,6 @@ export default {
     },
     closeModalOutside(idModal,event) {
       var modal = document.getElementById(idModal);
-      if (event.target == modal) {
-          modal.style.display = "none";
-      }
     },
   },
 
@@ -167,6 +173,13 @@ export default {
 </script>
 
 <style>
+.imgObj{
+  width: 10%;
+  height: 10%;
+  max-width: 10%;
+  max-height: 10%;
+}
+
 .iconButton{
   font-size: 300%;
 }
@@ -223,17 +236,21 @@ export default {
 }
 
 .unConseil{
-text-align: left;
+  border: solid;
+  padding: 1%;
+  margin-bottom: 1%;
 }
 
 .lesConseils{
-  padding: 10%;
+  padding: 1%;
   border: solid;
 }
 
 .modalImage{
-  width: 20%;
-  height: 20%;
+  width: 10%;
+  height: 10%;
+  max-width: 10%;
+  max-height: 10%;
 }
 .listOfPlants{
   display: grid;
@@ -244,6 +261,8 @@ text-align: left;
   margin-top: 20%;
   width: 50%;
   height: 50%;
+  max-width: 50%;
+  max-height: 50%;
   text-align: center;
 }
 
