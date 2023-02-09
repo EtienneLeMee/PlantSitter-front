@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import ListPlantsView from '../views/ListPlants.vue'
+import ListPlantsView from '../views/ListPlantsView.vue'
 import DemandView from '../views/DemandView.vue'
 import AccountView from '../views/AccountView.vue'
 
