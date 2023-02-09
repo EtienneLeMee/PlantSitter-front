@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import PlantsView from '../views/PlantsView.vue'
+import ListPlants from '../views/ListPlants.vue'
 import DemandView from '../views/DemandView.vue'
 import AccountView from '../views/AccountView.vue'
 
@@ -26,7 +26,7 @@ const routes = [
   {
     path: '/plants',
     name: 'plants',
-    component: PlantsView,
+    component: ListPlants,
     meta: { title: 'Plants - MyApp' }
   },
   {
