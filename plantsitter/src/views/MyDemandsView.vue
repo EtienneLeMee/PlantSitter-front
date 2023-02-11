@@ -1,6 +1,6 @@
 <template>
-    <div class="home">
-      <Home/>
+    <div class="MyDemands">
+      <MyDemands/>
     </div>
     <div class="nav">
       <Nav/>
@@ -11,14 +11,14 @@
   
   <script>
   // @ is an alias to /src
-  import Home from '@/components/Home.vue'
+  import MyDemands from '@/components/MyDemands.vue'
   import Nav from '@/components/Nav.vue'
   import PlantItem from '@/components/PlantItem.vue'
   
   export default {
     name: 'AccountView',
     components: {
-      Home,
+      MyDemands,
       Nav,
       PlantItem
     },
@@ -34,7 +34,7 @@
       margin-right: 40px;
     }
   
-    .home {
+    .MyDemands {
       position: absolute;
     }
   

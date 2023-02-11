@@ -7,7 +7,7 @@
             <li><a href="#discover">Découvrir</a></li>
             <li><a href="#demande">Créer une demande</a></li>
             <li><a href="#plants">Plantes</a></li>
-            <li><a href="#account">Mon compte</a></li>
+            <li><a href="#demands">Mes demandes</a></li>
         </ul>
     </nav>
   </template>
