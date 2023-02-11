@@ -2,7 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import ListPlantsView from '../views/ListPlantsView.vue'
 import DemandView from '../views/DemandView.vue'
-import AccountView from '../views/AccountView.vue'
+import MyDemandsView from '../views/MyDemandsView.vue'
 
 const routes = [
   {
@@ -12,10 +12,10 @@ const routes = [
     meta: { title: 'About - MyApp' }
   },
   {
-    path: '/account',
-    name: 'account',
-    component: AccountView,
-    meta: { title: 'Account - MyApp' }
+    path: '/demands',
+    name: 'demands',
+    component: MyDemandsView,
+    meta: { title: 'Demands - MyApp' }
   },
   {
     path: '/demande',

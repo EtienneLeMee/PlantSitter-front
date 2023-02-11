@@ -116,21 +116,6 @@
                 formData.append('plante',  this.plantesSelected);
                 formData.append('idCreateur', 2);
                 formData.append('idAccepteur', 3);
-
-                
-
-                const publication = {
-                    dateDebut: document.getElementById('dateDebut').value, 
-                    dateFin: document.getElementById('dateFin').value,
-                    titre: document.getElementById('titre').value,
-                    description: document.getElementById('description').value,
-                    heureDebut: document.getElementById('heureDebut').value,
-                    heureFin: document.getElementById('heureFin').value,
-                    plante: this.plantesSelected,
-                    idCreateur: 2,
-                    idAccepteur: 3,
-                    image: document.getElementById('file').files[0]
-                };
                 const api = axios.create({
                     headers: {
                     'Content-Type': 'multipart/form-data'
@@ -138,7 +123,7 @@
                 })
                 api.post("http://127.0.0.1:8000/apit/publication/", formData)
                     .then(response => this.requestResult = response.data.id);
-                document.location.href='http://localhost:5173/#/'; 
+                document.location.href='http://localhost:5173/#/demands'; 
             }
         },
         addPlante(element) {
@@ -241,7 +226,6 @@
 
     .text {
         width: 500px;
-        height: 85vh;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -249,6 +233,7 @@
         box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
         border-radius: 20px;
         background-color: white;
+        padding: 30px 0px 30px 0px;
     }
 
     .subtitle {
