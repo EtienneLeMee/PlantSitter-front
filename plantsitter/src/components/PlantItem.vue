@@ -38,7 +38,8 @@
             <div class="modal-body">
                 <div class="grid">
                     <img class="img-modal" :src="img" />
-                    <div style="
+                    <div
+                        style="
                             padding-left: 20px;
                             display: flex;
                             flex-direction: column;
@@ -63,13 +64,6 @@
                             class="horizontal-wrapper"
                             style="margin-block: 2.5px"
                         >
-                            <div class="button-box">
-                                <img
-                                    class="button-icon"
-                                    src="../assets/icons/phone.png"
-                                />
-                                <p class="tel">{{ phone }}</p>
-                            </div>
                         </div>
                     </div>
                 </div>

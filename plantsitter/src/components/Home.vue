@@ -13,7 +13,7 @@
                 <ul class="list-plantitem">
                     <li v-for="item in items" :key="item.message">
                         <div class="plantitem">
-                            <PlantItem :title="item.title" :date="item.date" :user="item.user" :desc="item.desc" :img="item.img" :phone="item.phone"/>
+                            <PlantItem :title="item.title" :date="item.date" :user="item.user" :desc="item.desc" :img="item.img" v-on:click="openModal(item.title,item.date,item.user,item.desc,item.img)" />
                         </div>
                     </li>
                 </ul>
