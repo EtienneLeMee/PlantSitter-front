@@ -56,6 +56,7 @@
       desc: String,
       img: String,
       idPublication: String,
+      isModal: Boolean,
     },
     data() {
         return {
@@ -111,8 +112,10 @@
             }
         },
         openModal(event) {
-            var modal = document.getElementById("myModal");
-            modal.style.display = "block";
+            if(this.isModal == true){
+                var modal = document.getElementById("myModal");
+                modal.style.display = "block";
+            }
         },
         closeModal(event) {
             var modal = document.getElementById("myModal");

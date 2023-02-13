@@ -13,7 +13,7 @@
                 <ul class="list-plantitem">
                     <li v-for="item in items" :key="item.message">
                         <div class="plantitem">
-                            <PlantItem :title="item.title" :date="item.date" :user="item.user" :desc="item.desc" :img="item.img" :idPublication="item.idPublication"/>
+                            <PlantItem :title="item.title" :date="item.date" :user="item.user" :desc="item.desc" :img="item.img" :idPublication="item.idPublication" :isModal="item.isModal"/>
                         </div>
                     </li>
                 </ul>
@@ -64,6 +64,7 @@
                         desc: publication.description,
                         img: publication.image,
                         idPublication : publication.id,
+                        isModal: true,
                     })
                 });
             })
