@@ -75,13 +75,13 @@
     methods: {
         sendMessage(event) {
             let formData = new FormData();
-            console.log(Date.now())
+            var d = new Date();
+            var currentTime = d.toLocaleTimeString();
             var todayDate = new Date().toISOString().slice(0, 10);
             formData.append('image', document.getElementById('file').files[0], 'test.png');
             formData.append('date',  todayDate);
-            formData.append('heure',  document.getElementById('dateFin').value);
+            formData.append('heure',  currentTime);
             formData.append('description',  document.getElementById('newMessage').value);
-            formData.append('plante',  this.plantesSelected);
             formData.append('idUtilisateur', 2);
             formData.append('idPublication', this.idPublication);
             const api = axios.create({
@@ -89,8 +89,8 @@
                 'Content-Type': 'multipart/form-data'
                 }
             })
-            //api.post("http://127.0.0.1:8000/apit/message/", formData)
-                //.then(response => this.requestResult = response.data.id);
+            api.post("http://127.0.0.1:8000/apit/message/", formData)
+                .then(response => this.requestResult = response.data.id);
         },
         addImage(event) {
             let imgInp = document.getElementById('file')
