@@ -1,9 +1,5 @@
-
 <template>
     <div class="wrapper">
-
-        
-
         <!--<img alt="Background Image" class="background" id="background" src="../assets/background.png">-->
         <div class="hero-wrapper">
             <div class="content">
