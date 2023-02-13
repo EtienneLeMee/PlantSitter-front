@@ -1,22 +1,31 @@
 
 <template>
     <div class="wrapper">
-
-        
-
         <!--<img alt="Background Image" class="background" id="background" src="../assets/background.png">-->
         <div class="hero-wrapper">
             <div class="content">
                 <!--<p class="subtitle">Faites garder vos plantes !</p>-->
-                <p class="title"><b>Accueil</b></p>
+                
+                <AccountBlock  :user="item.user" :img="item.img" :phone="item.phone" :adresse="item.adresse"/>
+
+                
+                <p class="title"><b>Mes demandes en cours</b></p>
 
                 <ul class="list-plantitem">
-                    <li v-for="item in items" :key="item.message">
+                    <li v-for="item in requests" :key="item.message">
                         <div class="plantitem">
-                            <PlantItem :title="item.title" :date="item.date" :user="item.user" :desc="item.desc" :img="item.img" v-on:click="openModal(item.title,item.date,item.user,item.desc,item.img)" />
+                            <PlantItem :title="item.title" :date="item.date" :user="item.user" :desc="item.desc" :img="item.img" :phone="item.phone"/>
                         </div>
                     </li>
                 </ul>
+                
+                <!--<ul class="list-plantitem">
+                    <li v-for="item in items" :key="item.message">
+                        <div class="plantitem">
+                            <PlantItem :title="item.title" :date="item.date" :user="item.user" :desc="item.desc" :img="item.img" :phone="item.phone"/>
+                        </div>
+                    </li>
+                </ul>-->
                 
                 
                 <!--<p class="desc">Suivez nos conseils d'entretien, laissez vos plantes à des passionnés durant vos vacances, ayez des nouvelles régulières !
@@ -29,6 +38,7 @@
   </template>
   
   <script>
+  import AccountBlock from '@/components/AccountBlock.vue'
   import PlantItem from '@/components/PlantItem.vue'
   
   /*methods: {
@@ -43,21 +53,27 @@
 
 
   export default {
-    name: 'Home',
+    name: 'Account',
     components: {
+    AccountBlock,
     PlantItem
   },
     data () {
     return{
         parentMessage: 'Parent',
-        items: [
+        item:
+        { user:'Alain Chabat', img:'https://cdn.pixabay.com/photo/2023/01/24/13/23/viet-nam-7741017_960_720.jpg',phone:'0663987568',adresse:'12 rue de la paix, Sautron 44880'},
+        requests: [
         { title: 'Plant de rose 5L', date: '30/01/2023 19:50 - 31/01/2023 22:00', user:'Alain Chabat', desc: 'Je recherche quelqu’un susebtible de pouvoir garder mes plantes 1 soir du 30 au 31', img:'https://cdn.pixabay.com/photo/2013/08/22/19/18/flowers-174817_960_720.jpg',phone:'0663987568'},
         { title: 'Agapanthe 6mois', date: '03/02/2023 10:00 - 07/02/2023 10:00', user:'Francis Ngannou', desc: 'Je pars en week-end j’aurais besoin de quelqu’un pour arroser ma plante', img:'https://cdn.pixabay.com/photo/2019/06/17/08/24/pastel-4279379_960_720.jpg',phone:'0789645236'},
-        ],}
-            },
+        ]
+    
+        } 
+    },
     props: {
       msg: String
     }
+    
   }
   </script>
   
@@ -95,7 +111,7 @@
     .list-plantitem {
         list-style: none;
         width: 100%;
-        padding: 20px;
+        padding: 0;
         margin: 0;
         display: flex;
         flex-direction: column;
@@ -104,6 +120,7 @@
 
     .plantitem {
         margin-block: 20px;
+        padding-right: 20px;
     }
     
     .background {
@@ -117,7 +134,6 @@
 
     .content {
         width: 100%;
-        height: 500px;
         display: flex;
         justify-content: center;
         align-items: flex-start;

@@ -8,20 +8,15 @@
         <div class="hero-wrapper">
             <div class="content">
                 <!--<p class="subtitle">Faites garder vos plantes !</p>-->
-                <p class="title"><b>Accueil</b></p>
+                <p class="title"><b>Mes demandes</b></p>
 
                 <ul class="list-plantitem">
                     <li v-for="item in items" :key="item.message">
                         <div class="plantitem">
-                            <PlantItem :title="item.title" :date="item.date" :user="item.user" :desc="item.desc" :img="item.img" v-on:click="openModal(item.title,item.date,item.user,item.desc,item.img)" />
+                            <PlantItem :title="item.title" :date="item.date" :user="item.user" :desc="item.desc" :img="item.img" :idPublication="item.idPublication"/>
                         </div>
                     </li>
                 </ul>
-                
-                
-                <!--<p class="desc">Suivez nos conseils d'entretien, laissez vos plantes à des passionnés durant vos vacances, ayez des nouvelles régulières !
-                </p>
-                <a href="#characters"><button class="check">Voir les plantes !</button></a>-->
             </div>
         </div>
     </div>
@@ -30,31 +25,54 @@
   
   <script>
   import PlantItem from '@/components/PlantItem.vue'
-  
-  /*methods: {
-    addNewTodo: function () {
-      this.todos.push({
-        id: this.nextTodoId++,
-        title: this.newTodoText
-      })
-      this.newTodoText = ''
-    }
-  }*/
 
+  const idUser = 2
+  
+  const apiURL = "http://127.0.0.1:8000/apit/publication/?createur=" + String(idUser);
+  const config = {};
+  
+  import axios from 'axios'
 
   export default {
-    name: 'Home',
+    name: 'MyDemands',
     components: {
-    PlantItem
-  },
+        PlantItem
+    },
+    created: function() {
+        this.fetchPlants();
+    },
     data () {
-    return{
-        parentMessage: 'Parent',
-        items: [
-        { title: 'Plant de rose 5L', date: '30/01/2023 19:50 - 31/01/2023 22:00', user:'Alain Chabat', desc: 'Je recherche quelqu’un susebtible de pouvoir garder mes plantes 1 soir du 30 au 31', img:'https://cdn.pixabay.com/photo/2013/08/22/19/18/flowers-174817_960_720.jpg',phone:'0663987568'},
-        { title: 'Agapanthe 6mois', date: '03/02/2023 10:00 - 07/02/2023 10:00', user:'Francis Ngannou', desc: 'Je pars en week-end j’aurais besoin de quelqu’un pour arroser ma plante', img:'https://cdn.pixabay.com/photo/2019/06/17/08/24/pastel-4279379_960_720.jpg',phone:'0789645236'},
-        ],}
-            },
+        return{
+            parentMessage: 'Parent',
+            items: [
+                //{ title: 'Plant de rose 5L', date: '30/01/2023 19:50 - 31/01/2023 22:00', user:'Alain Chabat', desc: 'Je recherche quelqu’un susebtible de pouvoir garder mes plantes 1 soir du 30 au 31', img:'https://cdn.pixabay.com/photo/2013/08/22/19/18/flowers-174817_960_720.jpg',phone:'0663987568'},
+                //{ title: 'Agapanthe 6mois', date: '03/02/2023 10:00 - 07/02/2023 10:00', user:'Francis Ngannou', desc: 'Je pars en week-end j’aurais besoin de quelqu’un pour arroser ma plante', img:'https://cdn.pixabay.com/photo/2019/06/17/08/24/pastel-4279379_960_720.jpg',phone:'0789645236'},
+            ]
+        ,}
+    },
+    methods: {
+      fetchPlants: function() {
+        const self = this;
+        axios
+            .get(apiURL, config)
+            .then(function(response) {
+                response.data.forEach(publication => {
+                    self.items.push({
+                        title: publication.titre,
+                        date: publication.dateDebut.split("-").reverse().join("/") + ' ' + publication.heureDebut.substring(0,5) + ' - ' + publication.dateFin.split("-").reverse().join("/") + ' ' + publication.heureFin.substring(0,5),
+                        user: publication.nomAccepteur,
+                        desc: publication.description,
+                        img: publication.image,
+                        idPublication : publication.id,
+                    })
+                });
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+            
+      },
+    },
     props: {
       msg: String
     }
@@ -80,12 +98,12 @@
     .hero-wrapper {
         display: flex;
         width:80%;
-        margin-top: 80px;
         min-width: 500px;
         max-width: 2000px;
         height: 100vh;
         background-color: white;
         left: 0;
+        margin-top: 50px;
         display: flex;
         align-items: center;
         flex-direction: column;
@@ -95,7 +113,7 @@
     .list-plantitem {
         list-style: none;
         width: 100%;
-        padding: 20px;
+        padding: 0;
         margin: 0;
         display: flex;
         flex-direction: column;

@@ -1,32 +1,9 @@
 <template>
     <div class="card" v-on:click="openModal">
-        <img class="img" :src="img" />
-        <div
-            style="
-                padding-left: 20px;
-                display: flex;
-                flex-direction: column;
-                align-items: stretch;
-            "
-        >
-            <div class="horizontal-wrapper" style="margin-block: 2.5px">
-                <p class="title">{{ title }}</p>
-                <p class="date">{{ date }}</p>
-            </div>
-
-            <p class="user" style="margin-block: 2.5px">{{ user }}</p>
-            <p class="desc" style="margin-block: 2.5px">
-                <l>{{ desc }}</l>
-            </p>
-            <div class="horizontal-wrapper" style="margin-block: 2.5px">
-                <div class="button-box">
-                    <img class="button-icon" src="../assets/icons/phone.png" />
-                    <p class="tel">{{ phone }}</p>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- The Modal -->
     <div id="myModal" class="modal">
         <!-- Modal content -->
@@ -276,14 +253,3 @@ a {
     margin-top: 10px;
     margin-bottom: 10px;
 }
-
-.grid {
-    width: 100%;
-    height: 500px;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-row-gap: 15px;
-    overflow-y: scroll;
-    justify-content: center;
-}
-</style>
