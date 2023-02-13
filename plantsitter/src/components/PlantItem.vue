@@ -9,7 +9,8 @@
             
             <p class="user" style="margin-block:2.5px">{{user}}</p>
             <p class="desc" style="margin-block:2.5px"><l>{{desc}}</l></p>
-            <p class="voir" style="color: #5EB563; cursor: pointer;" v-if="user != 'Votre demande n\'a pas encore été acceptée par un utilisateur.'"><b>Voir la conversation</b></p>
+            <p class="voir" style="color: #5EB563; cursor: pointer;" v-if="isModal && user != 'Votre demande n\'a pas encore été acceptée par un utilisateur.'"><b>Voir la conversation</b></p>
+            <button class="check" v-if="!isModal" v-on:click="">Garder ces plantes</button>
         </div>
     </div>
 
@@ -24,6 +25,12 @@
             </div>
             <div class="modal-body">
                 <div class="conversation">
+                    <div class="affichageMessage">
+                        <div v-for="message in messages" v-bind:class="{'messageContainerGreen': message.idUtilisateur == idCreateur,  'messageContainerWhite': message.idUtilisateur != idCreateur}" >
+                            <img class="message-image" :src="message.image" v-if="message.image != null">
+                            <p>{{message.description}}</p>
+                        </div>
+                    </div>
                     <div class="envoiMessage">
                         <div class="fileContainer">
                             <label for="file" class="label-file"><img class="file-image" src="../assets/icons/attach.png"></label>
@@ -56,6 +63,8 @@
       desc: String,
       img: String,
       idPublication: String,
+      idCreateur: String,
+      idAccepteur: String,
       isModal: Boolean,
     },
     data() {
@@ -65,6 +74,7 @@
     },
     created: function () {
         this.fetchDataAsync();
+        console.log(this.idCreateur)
     },
     mounted() {
             document.addEventListener('click', this.closeModalOutside);
@@ -73,12 +83,30 @@
         document.removeEventListener('click', this.closeModalOutside);
     },
     methods: {
+        sendIdAccepteur(event) {
+            //let formData = new FormData();
+            //formData.append('idAccepteur', 3);
+            //formData.append('idPublication', this.idPublication);
+            const api = axios.create({
+                headers: {
+                'Content-Type': 'multipart/form-data'
+                }
+            })
+            api.patch("http://127.0.0.1:8000/apit/publication/"+this.idPublication, {
+                idAccepteur: 3
+            })
+                .then(response => this.requestResult = response.data.id);
+        },
         sendMessage(event) {
             let formData = new FormData();
             var d = new Date();
             var currentTime = d.toLocaleTimeString();
             var todayDate = new Date().toISOString().slice(0, 10);
-            formData.append('image', document.getElementById('file').files[0], 'test.png');
+            if(document.getElementById('file').value == ''){
+                
+            } else {
+                formData.append('image', document.getElementById('file').files[0], 'test.png');
+            }
             formData.append('date',  todayDate);
             formData.append('heure',  currentTime);
             formData.append('description',  document.getElementById('newMessage').value);
@@ -91,6 +119,12 @@
             })
             api.post("http://127.0.0.1:8000/apit/message/", formData)
                 .then(response => this.requestResult = response.data.id);
+            setTimeout(() => {
+                document.getElementById('newMessage').value = ''
+                document.getElementById('affichage-image').src = ''
+                this.fetchDataAsync();
+            }, 200);
+            
         },
         addImage(event) {
             let imgInp = document.getElementById('file')
@@ -105,9 +139,8 @@
                     apiURL,
                     config
                 );
-                this.messages = responseChar.data;
-                console.log(responseChar.data)
-                console.log(this.messages.target)
+                this.messages = responseChar.data.reverse();
+                console.log(this.messages)
             } catch (error) {
             }
         },
@@ -269,10 +302,10 @@
     margin-bottom: 10px;
 }
     .conversation {
-        background-color: transparent;
         width: 100%;
         height: 65vh;
         display: flex;
+        flex-direction: column;
     }
     input[type='text']{
         all: unset;
@@ -295,6 +328,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        gap: 10px;
     }
     .send-image {
         height: 30px;
@@ -305,7 +339,7 @@
         cursor: pointer;
         color: #fff;
         font-weight: bold;
-        height: 35px;
+        height: 40px;
         width: 50px;
         background-color: #5EB563;
         display: flex;
@@ -340,5 +374,37 @@
         align-self: flex-start;
         margin-left: 5%;
         max-height: 70px;
+    }
+
+    .affichageMessage {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column-reverse;
+        overflow-y: scroll;
+    }
+
+    .messageContainerGreen {
+        width: 40%;
+        background-color: #5EB563;
+        border-radius: 10px;
+        margin: 10px;
+        padding: 10px;
+        color: white;
+        align-self: flex-end;
+    }
+
+    .messageContainerWhite {
+        width: 40%;
+        background-color: #ececec;
+        border-radius: 10px;
+        margin: 10px;
+        padding: 10px;
+        color: black;
+        
+    }
+
+    .message-image {
+        width: 100%;
     }
   </style>
