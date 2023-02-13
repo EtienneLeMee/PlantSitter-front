@@ -27,7 +27,7 @@
 
   const idUser = 2
   
-  const apiURL = "http://127.0.0.1:8000/apit/publication";
+  const apiURL = "http://127.0.0.1:8000/apit/publications";
   const config = {};
   
   import axios from 'axios'
