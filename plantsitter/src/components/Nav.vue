@@ -8,6 +8,8 @@
             <li><a href="#demande">Créer une demande</a></li>
             <li><a href="#plants">Plantes</a></li>
             <li><a href="#demands">Mes demandes</a></li>
+            <li><a href="#login" v-if="!isLoggedIn">Se connecter</a></li>
+            <li><a href="#deco" v-if="isLoggedIn">Se déconnecter</a></li>
         </ul>
     </nav>
   </template>
@@ -15,9 +17,23 @@
   <script>
   export default {
     name: 'Nav',
+    data() {
+        return {
+          isLoggedIn: null,
+        };
+    },
     props: {
       msg: String
-    }
+    },  mounted() {
+      console.log(localStorage.getItem('isLoggedIn'))
+        if(localStorage.getItem('isLoggedIn') == null){
+          this.isLoggedIn = false;
+          console.log('test')
+        } else {
+          this.isLoggedIn = true;
+        }
+        
+    },
   }
 
 

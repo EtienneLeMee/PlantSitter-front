@@ -3,6 +3,9 @@ import HomeView from '../views/HomeView.vue'
 import ListPlantsView from '../views/ListPlantsView.vue'
 import DemandView from '../views/DemandView.vue'
 import MyDemandsView from '../views/MyDemandsView.vue'
+import DecoView from '../views/DecoView.vue'
+import LoginView from '../views/LoginView.vue'
+
 
 const routes = [
   {
@@ -27,6 +30,18 @@ const routes = [
     path: '/plants',
     name: 'plants',
     component: ListPlantsView,
+    meta: { title: 'Plants - MyApp' }
+  },
+  {
+    path: '/deco',
+    name: 'deco',
+    component: DecoView,
+    meta: { title: 'Plants - MyApp' }
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: LoginView,
     meta: { title: 'Plants - MyApp' }
   },
   {
