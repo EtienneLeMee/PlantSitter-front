@@ -91,6 +91,7 @@
             }
         },
         addPublication: function () {
+<<<<<<< Updated upstream
             const publication = {
                 dateDebut: "2023-02-02", 
                 dateFin: "2023-02-03",
@@ -99,6 +100,32 @@
             };
             axios.post("http://127.0.0.1:8000/apit/publication/", publication)
                 .then(response => this.articleId = response.data.id);
+=======
+            if(document.getElementById('description').value == '' || document.getElementById('titre').value == '' || document.getElementById('heureDebut').value == '' || document.getElementById('heureFin').value == '' || document.getElementById('dateDebut').value == '' || document.getElementById('dateFin').value == '' || this.plantesSelected.length == 0 || document.getElementById('file').value == ''){
+                document.getElementById('disable').style.display = 'block'
+            } else {
+                document.getElementById('disable').style.display = 'none'
+                let formData = new FormData();
+                formData.append('image', document.getElementById('file').files[0], 'test.png');
+                formData.append('dateDebut',  document.getElementById('dateDebut').value);
+                formData.append('dateFin',  document.getElementById('dateFin').value);
+                formData.append('titre',  document.getElementById('titre').value);
+                formData.append('description',  document.getElementById('description').value);
+                formData.append('heureDebut',  document.getElementById('heureDebut').value);
+                formData.append('heureFin',  document.getElementById('heureFin').value);
+                formData.append('plante',  this.plantesSelected);
+                formData.append('idCreateur', 2);
+                formData.append('idAccepteur', 3);
+                const api = axios.create({
+                    headers: {
+                    'Content-Type': 'multipart/form-data'
+                    }
+                })
+                api.post("http://127.0.0.1:8000/apit/publications/", formData)
+                    .then(response => this.requestResult = response.data.id);
+                document.location.href='http://localhost:5173/#/demands'; 
+            }
+>>>>>>> Stashed changes
         },
         addPlante(element) {
             //Si la plante a déjà été sélectionnée

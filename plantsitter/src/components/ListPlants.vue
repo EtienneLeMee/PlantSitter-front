@@ -139,7 +139,7 @@ export default {
         'Content-Type': 'multipart/form-data'
         }
       })
-      api.post("http://127.0.0.1:8000/apit/conseil/", formData)
+      api.post(apiURL+"conseil/", formData)
         .then(response => self.requestResult = response.data.id)
         document.getElementById('titreConseil').value = ''
         document.getElementById('descriptionConseil').value = ''
