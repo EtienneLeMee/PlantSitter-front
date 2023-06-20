@@ -7,7 +7,7 @@
 
                 <ul class="list-plantitem">
                     <li v-for="item in items" :key="item.message">
-                        <div class="plantitem">
+                        <div class="plantitem" v-if="item.idCreateur != item.loginID">
                             <PlantItem :title="item.title" :date="item.date" :user="item.user" :desc="item.desc" :img="item.img" :idPublication="item.idPublication" :isModal="item.isModal"/>
                         </div>
                     </li>
@@ -49,7 +49,11 @@
             .get(apiURL, config)
             .then(function(response) {
                 response.data.forEach(publication => {
+                    console.log(response.data)
                     self.items.push({
+                        idAccepteur: publication.idAccepteur,
+                        idCreateur: publication.idCreateur,
+                        loginID: localStorage.getItem('loginID'),
                         title: publication.titre,
                         date: publication.dateDebut.split("-").reverse().join("/") + ' ' + publication.heureDebut.substring(0,5) + ' - ' + publication.dateFin.split("-").reverse().join("/") + ' ' + publication.heureFin.substring(0,5),
                         user: publication.nomAccepteur,

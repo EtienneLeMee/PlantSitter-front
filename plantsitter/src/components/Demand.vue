@@ -114,8 +114,7 @@
                 formData.append('heureDebut',  document.getElementById('heureDebut').value);
                 formData.append('heureFin',  document.getElementById('heureFin').value);
                 formData.append('plante',  this.plantesSelected);
-                formData.append('idCreateur', 2);
-                formData.append('idAccepteur', 3);
+                formData.append('idCreateur', localStorage.getItem('loginID'));
                 const api = axios.create({
                     headers: {
                     'Content-Type': 'multipart/form-data'

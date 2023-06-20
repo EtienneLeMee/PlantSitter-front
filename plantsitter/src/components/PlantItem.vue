@@ -1,5 +1,5 @@
 <template>
-    <div class="card" v-on:click="openModal">
+    <div class="card">
         <img class="img" :src="img">
         <div style="padding-left: 20px; display: flex; flex-direction: column; align-items: stretch;">
             <div class="horizontal-wrapper" style="margin-block:2.5px">
@@ -9,8 +9,8 @@
             
             <p class="user" style="margin-block:2.5px">{{user}}</p>
             <p class="desc" style="margin-block:2.5px"><l>{{desc}}</l></p>
-            <p class="voir" style="color: #5EB563; cursor: pointer;" v-if="isModal && user != 'Votre demande n\'a pas encore été acceptée par un utilisateur.'"><b>Voir la conversation</b></p>
-            <button class="check" v-if="!isModal" v-on:click="">Garder ces plantes</button>
+            <p class="voir" style="color: #5EB563; cursor: pointer;" v-if="isModal && user != 'Votre demande n\'a pas encore été acceptée par un utilisateur.'" v-on:click="openModal"><b>Voir la conversation</b></p>
+            <button class="check" v-if="user == 'Votre demande n\'a pas encore été acceptée par un utilisateur.'" v-on:click="sendIdAccepteur">Garder ces plantes</button>
         </div>
     </div>
 
@@ -84,17 +84,16 @@
     },
     methods: {
         sendIdAccepteur(event) {
-            //let formData = new FormData();
-            //formData.append('idAccepteur', 3);
-            //formData.append('idPublication', this.idPublication);
+            console.log('test')
+            let formData = new FormData();
+            formData.append('idAccepteur', localStorage.getItem('loginID'));
+            formData.append('idPublication', this.idPublication);
             const api = axios.create({
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }
             })
-            api.patch("http://127.0.0.1:8000/apit/publication/"+this.idPublication, {
-                idAccepteur: 3
-            })
+            api.patch("http://127.0.0.1:8000/apit/publication/"+this.idPublication, formData)
                 .then(response => this.requestResult = response.data.id);
         },
         sendMessage(event) {

@@ -8,7 +8,7 @@
         <label for="email">Identifiant</label>
         <input
                id="identifiant"
-               type="email"
+               type="text"
                placeholder="me@example.com"
                name="text"
                required
