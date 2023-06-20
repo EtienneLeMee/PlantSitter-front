@@ -62,7 +62,7 @@
 </template>
 
 <script>
-const apiURL = "http://127.0.0.1:8000/apit/";
+const apiURL = "https://69e4-193-248-211-251.ngrok-free.app/apit/";//"http://127.0.0.1:8000/apit/";
 const config = {};
 
 import axios from 'axios'
