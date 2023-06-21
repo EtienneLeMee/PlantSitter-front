@@ -25,7 +25,7 @@
             <div class="modal-body">
                 <div class="conversation">
                     <div class="affichageMessage">
-                        <div v-for="message in messages" v-bind:class="{'messageContainerGreen': message.idsrc == userConnected,  'messageContainerWhite': message.idsrc != userConnected}" >
+                        <div v-for="message in messages" v-bind:class="{'messageContainerGreen': message.idsrc == userConnected,  'messageContainerWhite': message.idsrc != userConnected, 'messageDisabled': message.idPublication != idPublication}">
                             <img class="message-image" :src="message.image" v-if="message.image != null">
                             <p>{{message.description}}</p>
                         </div>
@@ -150,7 +150,7 @@
         fetchDataAsync: async function () {
             try {
                 const responseChar = await axios.get(
-                    apiURL + "?idPublication=" + this.idPublication,
+                    apiURL,
                     config
                 );
                 this.messages = responseChar.data.reverse();
@@ -159,6 +159,7 @@
             }
         },
         openModal(event) {
+            this.fetchDataAsync();
             console.log(this.idPublication)
             if(this.isModal == true){
                 var modal = document.getElementById(this.idPublication);
@@ -407,6 +408,10 @@
         padding: 10px;
         color: white;
         align-self: flex-end;
+    }
+
+    .messageDisabled {
+        display: none;
     }
 
     .messageContainerWhite {
