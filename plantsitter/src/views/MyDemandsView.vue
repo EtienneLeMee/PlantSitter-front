@@ -1,9 +1,9 @@
 <template>
-    <div class="MyDemands">
-      <MyDemands/>
-    </div>
     <div class="nav">
       <Nav/>
+    </div>
+    <div class="MyDemands">
+      <MyDemands/>
     </div>
     
     <title>Hogwarts Wiki</title>

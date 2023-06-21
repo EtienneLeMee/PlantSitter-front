@@ -7,13 +7,21 @@
         <!--<img alt="Background Image" class="background" id="background" src="../assets/background.png">-->
         <div class="hero-wrapper">
             <div class="content">
-                <!--<p class="subtitle">Faites garder vos plantes !</p>-->
-                <p class="title"><b>Mes demandes</b></p>
-
+                <p class="title"><b>Mes plantes à garder :</b></p>
                 <ul class="list-plantitem">
                     <li v-for="item in items" :key="item.message">
                         <div class="plantitem">
-                            <PlantItem :title="item.title" :date="item.date" :user="item.user" :desc="item.desc" :img="item.img" :idPublication="item.idPublication" :isModal="item.isModal" :idAccepteur="item.idAccepteur" :idCreateur="item.idCreateur"/>
+                            <PlantItem :title="item.title" :date="item.date" :user="item.user" :desc="item.desc" :img="item.img" :idPublication="item.idPublication" :isModal="item.isModal" :idAccepteur="item.idAccepteur" :idCreateur="item.idCreateur" :voirConversation="true"/>
+                        </div>
+                    </li>
+                </ul>
+                <!--<p class="subtitle">Faites garder vos plantes !</p>-->
+                <p class="title"><b>Plantes que je dois garder :</b></p>
+
+                <ul class="list-plantitem">
+                    <li v-for="item in items2" :key="item.message">
+                        <div class="plantitem">
+                            <PlantItem :title="item.title" :date="item.date" :user="item.user" :desc="item.desc" :img="item.img" :idPublication="item.idPublication" :isModal="item.isModal" :idAccepteur="item.idAccepteur" :idCreateur="item.idCreateur" :voirConversation="true"/>
                         </div>
                     </li>
                 </ul>
@@ -28,7 +36,7 @@
 
   const idUser = 2
   
-  const apiURL = "http://127.0.0.1:8000/apit/publication/?createur=" + String(idUser);
+  const apiURL = "http://127.0.0.1:8000/apit/publication/";
   const config = {};
   
   import axios from 'axios'
@@ -47,6 +55,9 @@
             items: [
                 //{ title: 'Plant de rose 5L', date: '30/01/2023 19:50 - 31/01/2023 22:00', user:'Alain Chabat', desc: 'Je recherche quelqu’un susebtible de pouvoir garder mes plantes 1 soir du 30 au 31', img:'https://cdn.pixabay.com/photo/2013/08/22/19/18/flowers-174817_960_720.jpg',phone:'0663987568'},
                 //{ title: 'Agapanthe 6mois', date: '03/02/2023 10:00 - 07/02/2023 10:00', user:'Francis Ngannou', desc: 'Je pars en week-end j’aurais besoin de quelqu’un pour arroser ma plante', img:'https://cdn.pixabay.com/photo/2019/06/17/08/24/pastel-4279379_960_720.jpg',phone:'0789645236'},
+            ],
+            items2: [
+
             ]
         ,}
     },
@@ -54,8 +65,9 @@
       fetchPlants: function() {
         const self = this;
         axios
-            .get(apiURL, config)
+            .get(apiURL + "?createur=" + localStorage.getItem('loginID'), config)
             .then(function(response) {
+                console.log(response.data)
                 response.data.forEach(publication => {
                     self.items.push({
                         title: publication.titre,
@@ -69,6 +81,30 @@
                         isModal: true,
                     })
                 });
+            })
+            .catch(function(error) {
+                console.log(error);
+            });
+
+
+            axios
+            .get(apiURL + "?accepteur=" + localStorage.getItem('loginID'), config)
+            .then(function(response) {
+                console.log(response.data)
+                response.data.forEach(publication => {
+                    self.items2.push({
+                        title: publication.titre,
+                        date: publication.dateDebut.split("-").reverse().join("/") + ' ' + publication.heureDebut.substring(0,5) + ' - ' + publication.dateFin.split("-").reverse().join("/") + ' ' + publication.heureFin.substring(0,5),
+                        user: publication.nomAccepteur,
+                        desc: publication.description,
+                        img: publication.image,
+                        idPublication : publication.id,
+                        idCreateur : publication.idCreateur,
+                        idAccepteur: publication.idAccepteur,
+                        isModal: true,
+                    })
+                });
+                console.log(self.items2)
             })
             .catch(function(error) {
                 console.log(error);
@@ -90,12 +126,14 @@
   a {
     all: unset;
   }
+
+  html {
+
+  }
     .wrapper {
         width: 100vw;
-        height: 100vh;
         display: flex;
         justify-content: center;
-        align-content: center;
     }
 
     .hero-wrapper {
@@ -103,12 +141,10 @@
         width:80%;
         min-width: 500px;
         max-width: 2000px;
-        height: 100vh;
         background-color: white;
         left: 0;
         margin-top: 50px;
         display: flex;
-        align-items: center;
         flex-direction: column;
     }
 
@@ -120,7 +156,6 @@
         margin: 0;
         display: flex;
         flex-direction: column;
-        align-items: left;
     }
 
     .plantitem {
@@ -139,10 +174,6 @@
     .content {
         width: 100%;
         height: 500px;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        flex-direction: column;
     }
 
     .subtitle {

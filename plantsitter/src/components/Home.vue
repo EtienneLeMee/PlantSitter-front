@@ -4,11 +4,11 @@
         <div class="hero-wrapper">
             <div class="content">
                 <!--<p class="subtitle">Faites garder vos plantes !</p>-->
-
+                <p>Voir les demandes sans gardien :</p>
                 <ul class="list-plantitem">
                     <li v-for="item in items" :key="item.message">
-                        <div class="plantitem" v-if="item.idCreateur != item.loginID">
-                            <PlantItem :title="item.title" :date="item.date" :user="item.user" :desc="item.desc" :img="item.img" :idPublication="item.idPublication" :isModal="item.isModal"/>
+                        <div class="plantitem" v-if="item.idCreateur != item.loginID && item.idAccepteur == null">
+                            <PlantItem :title="item.title" :date="item.date" :user="item.user" :desc="item.desc" :img="item.img" :idPublication="item.idPublication" :isModal="item.isModal" :voirConversation="false"/>
                         </div>
                     </li>
                 </ul>
@@ -23,7 +23,7 @@
 
   const idUser = 2
   
-  const apiURL = "http://127.0.0.1:8000/apit/publication";
+  const apiURL = "http://127.0.0.1:8000/apit/publication/";
   const config = {};
   
   import axios from 'axios'
@@ -56,7 +56,7 @@
                         loginID: localStorage.getItem('loginID'),
                         title: publication.titre,
                         date: publication.dateDebut.split("-").reverse().join("/") + ' ' + publication.heureDebut.substring(0,5) + ' - ' + publication.dateFin.split("-").reverse().join("/") + ' ' + publication.heureFin.substring(0,5),
-                        user: publication.nomAccepteur,
+                        user: publication.nomCreateur + ' - ' + publication.nomAccepteur,
                         desc: publication.description,
                         img: publication.image,
                         idPublication : publication.id,
@@ -89,7 +89,6 @@
         height: 100vh;
         display: flex;
         justify-content: center;
-        align-content: center;
     }
 
     .hero-wrapper {
@@ -101,9 +100,6 @@
         background-color: white;
         left: 0;
         margin-top: 50px;
-        display: flex;
-        align-items: center;
-        flex-direction: column;
     }
 
 
@@ -112,9 +108,6 @@
         width: 100%;
         padding: 0;
         margin: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: left;
     }
 
     .plantitem {
@@ -123,7 +116,6 @@
     
     .background {
         height: 100vh;
-        justify-self: flex-start;
         position: absolute;
         left: 0;
         z-index: 2;
@@ -133,10 +125,6 @@
     .content {
         width: 100%;
         height: 500px;
-        display: flex;
-        justify-content: center;
-        align-items: flex-start;
-        flex-direction: column;
     }
 
     .subtitle {

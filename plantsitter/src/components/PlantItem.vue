@@ -6,18 +6,17 @@
                 <p class="title">{{title}}</p>
                 <p class="date">{{date}}</p>
             </div>
-            
             <p class="user" style="margin-block:2.5px">{{user}}</p>
             <p class="desc" style="margin-block:2.5px"><l>{{desc}}</l></p>
-            <p class="voir" style="color: #5EB563; cursor: pointer;" v-if="isModal && user != 'Votre demande n\'a pas encore été acceptée par un utilisateur.'" v-on:click="openModal"><b>Voir la conversation</b></p>
-            <button class="check" v-if="user == 'Votre demande n\'a pas encore été acceptée par un utilisateur.'" v-on:click="sendIdAccepteur">Garder ces plantes</button>
+            <p class="voir" style="color: #5EB563; cursor: pointer;" v-if="isModal && voirConversation && idAccepteur != null" v-on:click="openModal('test')"><b>Voir la conversation</b></p>
+            <button class="check" v-on:click="sendIdAccepteur" v-if="!voirConversation">Garder ces plantes</button>
         </div>
     </div>
 
 
 
 
-    <div id="myModal" class="modal">
+    <div v-bind:id="idPublication" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <span class="close" v-on:click="closeModal()">&times;</span>
@@ -26,20 +25,20 @@
             <div class="modal-body">
                 <div class="conversation">
                     <div class="affichageMessage">
-                        <div v-for="message in messages" v-bind:class="{'messageContainerGreen': message.idUtilisateur == idCreateur,  'messageContainerWhite': message.idUtilisateur != idCreateur}" >
+                        <div v-for="message in messages" v-bind:class="{'messageContainerGreen': message.idsrc == userConnected,  'messageContainerWhite': message.idsrc != userConnected}" >
                             <img class="message-image" :src="message.image" v-if="message.image != null">
                             <p>{{message.description}}</p>
                         </div>
                     </div>
                     <div class="envoiMessage">
                         <div class="fileContainer">
-                            <label for="file" class="label-file"><img class="file-image" src="../assets/icons/attach.png"></label>
-                            <input type="file" name="titre" class="input-file" id="file" placeholder="Le nom de mes plantes" accept="image/jpeg, image/png" @change="addImage">
+                            <label v-bind:for="'file'+ this.idPublication" class="label-file"><img class="file-image" src="../assets/icons/attach.png"></label>
+                            <input type="file" name="titre" class="input-file" v-bind:id="'file' + idPublication" placeholder="Le nom de mes plantes" accept="image/jpeg, image/png" @change="addImage">
                             <div class="imageContainer">
-                                <img src="" class="affichage-image" id="affichage-image">
+                                <img src="" class="affichage-image" v-bind:id="'affichage-image' + idPublication">
                             </div>
                         </div>
-                        <input type="text" name="newMessage" id="newMessage" placeholder="Écrivez un nouveau message">
+                        <input type="text" name="newMessage" v-bind:id="'newMessage' + idPublication" placeholder="Écrivez un nouveau message">
                         <img v-on:click='sendMessage' class="send-image" src="../assets/icons/send.png">
                     </div>
                     
@@ -62,19 +61,29 @@
       title: String,
       desc: String,
       img: String,
-      idPublication: String,
+      idPublication: Number,
       idCreateur: String,
       idAccepteur: String,
       isModal: Boolean,
+      voirConversation: Boolean,
     },
     data() {
         return {
             messages: null,
+            userConnected: localStorage.getItem('loginID'),
+            test: [
+                this.title,
+                this.idPublication,
+                this.idCreateur,
+                this.idAccepteur
+            ]
         };
     },
     created: function () {
         this.fetchDataAsync();
         console.log(this.idCreateur)
+        console.log(this.idPublication)
+        console.log(this.test)
     },
     mounted() {
             document.addEventListener('click', this.closeModalOutside);
@@ -84,33 +93,39 @@
     },
     methods: {
         sendIdAccepteur(event) {
-            console.log('test')
+            console.log('testt')
             let formData = new FormData();
             formData.append('idAccepteur', localStorage.getItem('loginID'));
             formData.append('idPublication', this.idPublication);
             const api = axios.create({
                 headers: {
-                'Content-Type': 'multipart/form-data'
+                'Content-Type': 'multipart/form-data',
                 }
             })
-            api.patch("http://127.0.0.1:8000/apit/publication/"+this.idPublication, formData)
+            api.patch("http://127.0.0.1:8000/apit/publication/"+this.idPublication + '/', formData)
                 .then(response => this.requestResult = response.data.id);
         },
         sendMessage(event) {
+            console.log(this.test)
+            console.log(this.idPublication)
             let formData = new FormData();
             var d = new Date();
             var currentTime = d.toLocaleTimeString();
             var todayDate = new Date().toISOString().slice(0, 10);
-            if(document.getElementById('file').value == ''){
+            if(document.getElementById('file'+ this.idPublication).value == ''){
                 
             } else {
-                formData.append('image', document.getElementById('file').files[0], 'test.png');
+                formData.append('image', document.getElementById('file' + this.idPublication).files[0], 'test.png');
             }
             formData.append('date',  todayDate);
             formData.append('heure',  currentTime);
-            formData.append('description',  document.getElementById('newMessage').value);
-            formData.append('idUtilisateur', 2);
+            console.log('newMessage' + toString(this.idPublication))
+            formData.append('description',  document.getElementById('newMessage' +this.idPublication).value);
+            formData.append('idsrc', localStorage.getItem('loginID'));
+            formData.append('idDest', this.idCreateur);
             formData.append('idPublication', this.idPublication);
+            console.log(this.idPublication)
+            console.log(formData)
             const api = axios.create({
                 headers: {
                 'Content-Type': 'multipart/form-data'
@@ -119,23 +134,23 @@
             api.post("http://127.0.0.1:8000/apit/message/", formData)
                 .then(response => this.requestResult = response.data.id);
             setTimeout(() => {
-                document.getElementById('newMessage').value = ''
-                document.getElementById('affichage-image').src = ''
+                document.getElementById('newMessage'+ this.idPublication).value = ''
+                document.getElementById('affichage-image'+ this.idPublication).src = ''
                 this.fetchDataAsync();
             }, 200);
             
         },
         addImage(event) {
-            let imgInp = document.getElementById('file')
+            let imgInp = document.getElementById('file'+ this.idPublication)
             const [file] = imgInp.files
             if (file) {
-                document.getElementById('affichage-image').src = URL.createObjectURL(file)
+                document.getElementById('affichage-image'+ this.idPublication).src = URL.createObjectURL(file)
             }
         },
         fetchDataAsync: async function () {
             try {
                 const responseChar = await axios.get(
-                    apiURL,
+                    apiURL + "?idPublication=" + this.idPublication,
                     config
                 );
                 this.messages = responseChar.data.reverse();
@@ -144,17 +159,18 @@
             }
         },
         openModal(event) {
+            console.log(this.idPublication)
             if(this.isModal == true){
-                var modal = document.getElementById("myModal");
+                var modal = document.getElementById(this.idPublication);
                 modal.style.display = "block";
             }
         },
         closeModal(event) {
-            var modal = document.getElementById("myModal");
+            var modal = document.getElementById(this.idPublication);
             modal.style.display = "none";
         },
         closeModalOutside(event) {
-            var modal = document.getElementById("myModal");
+            var modal = document.getElementById(this.idPublication);
             if (event.target == modal) {
                 modal.style.display = "none";
             }

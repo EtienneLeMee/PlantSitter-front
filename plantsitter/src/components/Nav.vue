@@ -4,7 +4,6 @@
         
         <ul>
             <li><a href="#">Accueil</a></li>
-            <li><a href="#discover">Découvrir</a></li>
             <li><a href="#demande">Créer une demande</a></li>
             <li><a href="#plants">Plantes</a></li>
             <li><a href="#demands">Mes demandes</a></li>
