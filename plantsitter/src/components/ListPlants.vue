@@ -98,7 +98,7 @@ export default {
     fetchOnePlant: function() {
       const self = this;
       axios
-        .get(apiURL+"plante/"+this.idPlant, config)
+        .get(apiURL+"plante/"+this.idPlant+"/", config)
         .then(function(response) {
             self.plant = response.data;
         })
@@ -110,7 +110,7 @@ export default {
     fetchAllConseils: function() {
       const self = this;
       axios
-        .get(apiURL+"conseil", config)
+        .get(apiURL+"conseil/", config)
         .then(function(response) {
             self.conseils = response.data;
         })
