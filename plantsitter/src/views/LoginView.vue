@@ -26,7 +26,7 @@
                />
       </div>
 
-      <button class="btn btn--form" type="submit" value="Log in" v-on:click="login">
+      <button class="btn btn--form" type="button" value="Log in" v-on:click="login">
         Se connecter
       </button>
     </form>

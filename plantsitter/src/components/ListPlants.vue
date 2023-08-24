@@ -1,34 +1,34 @@
 <template>
-  <div class="listOfPlants">
-    <template v-for="plante in allPlants">
-      <div class = "divUnePlante" v-on:click="openModal('myModalShow',plante.id)">
+    <div class="grid">
+      <div v-for="plante in allPlants" class = "divUnePlante" v-on:click="openModal('myModalShow',plante.id)">
+        <p>{{ plante.nom }}</p>
+        <p style="color: grey; font-size: 12px;">Numéro de plante : {{ plante.id }}</p>
+        <br/>
+        <span style="padding: 5px; background-color: #5EB563; border-radius: 10px; color: white; font-size: 12px;">Voir les conseils</span>
         <img :src = "plante.image" class = "imgPlant">
-        <input type="text" v-model="plante.id" disabled>
-        <input type="text" v-model="plante.nom" disabled>
       </div>
-    </template>
-  </div>
+    </div>
   <div id="myModalShow" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <span class="close" v-on:click="closeModal('myModalShow')">&times;</span>
-                <p>Choisissez vos plantes :</p>
+                <p>Détail de {{ plant.nom }}</p>
             </div>
             <div class="modal-body">
               <img :src="plant.image" class = "modalImage">
               <div class = "infoPlant">
-                <h1>{{ plant.nom }}</h1>
-                <h3>{{ plant.nomScientifique }}</h3><br>
-                <h2>Les Conseils</h2>
+                <p style="font-size: 25px; font-weight: 600;">Nom commun : {{ plant.nom }}</p>
+                <p style="font-size: 18px; font-weight: 400;">Nom scientifique : {{ plant.nomScientifique }}</p><br>
+                <p style="margin-top: 100px; font-size: 17px;">Voir les conseils pour cette plante : </p><br/>
                 <div class="lesConseils">
                   <template v-for="unConseil in conseils">
                     <template v-if="unConseil.idPlante == idPlant">
                       <div class="unConseil">
-                        <img :src="unConseil.image" class="imgObj">
-                        <h3>Intitulé :</h3>
+                        <img :src="unConseil.image" style="float: right; border-radius: 12px;" class="imgObj">
+                        <p style="font-size: 14px;">Intitulé :</p>
                         <input type="text" v-model="unConseil.titre" disabled>
                         <br>
-                        <h3>Description :</h3>
+                        <p style="font-size: 14px;">Description :</p>
                         <input type="text" v-model="unConseil.description" disabled>
                       </div>
                     </template>
@@ -48,13 +48,17 @@
                 <p>Ajouter un commentaire :</p>
             </div>
             <div class="modal-body">
-              <h3>Titre :</h3>
-              <input type="text" class="titreConseil" id="titreConseil">
-              <h3>Description :</h3>
-              <input type="text" class="descriptionConseil" id="descriptionConseil">
-              <h3>Images :</h3>
-              <input type="file" class="imageConseil" id="imageConseil">
-              <img id="affichage-image">
+              <label for="titreConseil">Titre :</label><br>
+              <input type="text" class="titreConseil" id="titreConseil" placeholder="Titre"><br>
+              <label for="descriptionConseil">Description :</label><br>
+              <textarea cols=15 class="descriptionConseil" id="descriptionConseil" placeholder="Description"></textarea><br>
+              <div class="fileContainer">
+                  <label for="imageConseil" class="label-file">Ajoutez une photo</label>
+                  <input type="file" name="titre" class="input-file" id="imageConseil" placeholder="Le nom de mes plantes" accept="image/jpeg, image/png" @change="addImage">
+                  <div class="imageContainer">
+                      <img src="" class="affichage-image" id="affichage-image">
+                  </div>
+              </div>
               <input type="button" class="addConsButton" value="Valider" @click="addConseil(); closeModal('myModalInsert')">
             </div>
         </div>
@@ -98,7 +102,7 @@ export default {
     fetchOnePlant: function() {
       const self = this;
       axios
-        .get(apiURL+"plante/"+this.idPlant, config)
+        .get(apiURL+"plante/"+this.idPlant + '/', config)
         .then(function(response) {
             self.plant = response.data;
         })
@@ -110,7 +114,7 @@ export default {
     fetchAllConseils: function() {
       const self = this;
       axios
-        .get(apiURL+"conseil", config)
+        .get(apiURL+"conseil/", config)
         .then(function(response) {
             self.conseils = response.data;
         })
@@ -118,8 +122,8 @@ export default {
             console.log(error);
         });
     },
-
     addImage() {
+      console.log('test')
       let imgInp = document.getElementById('imageConseil')
       const [file] = imgInp.files
       if (file) {
@@ -128,6 +132,7 @@ export default {
     },
 
     addConseil() {
+      console.log(document.getElementById('imageConseil').files[0])
       const self = this
       let formData = new FormData();
       formData.append('titre', document.getElementById('titreConseil').value);
@@ -173,6 +178,48 @@ export default {
 </script>
 
 <style>
+
+.fileContainer {
+        width: 90%;
+        height: 40px;
+        display: flex;
+        justify-content: flex-start;
+        align-self: flex-start;
+        align-items: flex-start;
+    }
+
+    .imageContainer {
+        width: 300px;
+        height: 40px;
+        border-radius: 0px 5px 5px 0px;
+        background-color: #f4f4f4;
+        display: flex;
+        align-items: center;
+    }
+
+    .input-file {
+        display: none;
+    }
+
+    .affichage-image {
+        height: 40px;
+        align-self: flex-start;
+        margin-left: 5%;
+        max-height: 70px;
+    }
+
+    .label-file {
+        cursor: pointer;
+        color: #fff;
+        font-weight: bold;
+        height: 35px;
+        width: 150px;
+        background-color: #5EB563;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px 0px 0px 5px;
+    }
 .imgObj{
   width: 10%;
   height: 10%;
@@ -182,83 +229,31 @@ export default {
 
 .iconButton{
   font-size: 300%;
-}
-
-.addConsButton{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  width: 1%;
-  height:0;
-  padding-bottom: 3%;
-  border-radius: 50%;
-  border:3px solid gray;
-  overflow:hidden; 
-  background: white; 
-  box-shadow: 0 0 3px gray;
-  float: right;
-  padding: 20px 23px;
-	position: relative;
-	overflow: hidden;
-}
-
-.addConsButton:before{
-  content: "";
-	position: absolute;
-	background-color: rgba(0,0,0,.1);
-	width: 10%;
-	height: 15%;
-	border-radius: 50%;
-	z-index: 1;
-	top: 35%;
-	left: 45%;
-	-webkit-transform: scale(0);
-	transform: scale(0);
-}
-
-.addConsButton:hover::before{
-  -webkit-transform: scale(12);
-	transform: scale(12);
-	-webkit-transition: border-radius .5s .5s,-webkit-transform .5s;
-	transition: border-radius .5s .5s,-webkit-transform .5s;
-	transition: transform .5s,border-radius .5s .5s;
-	transition: transform .5s,border-radius .5s .5s,-webkit-transform .5s;
-}
-
-.addConsButton:hover::after{
-  content: "";
-	position: absolute;
-	z-index: 2;
-	left: 50%;
-	-webkit-transform: translateX(-50%);
-	transform: translateX(-50%);
+  font-weight:200;
 }
 
 .unConseil{
-  border: solid;
-  padding: 1%;
+  padding: 20px;
   margin-bottom: 1%;
+  background-color: #f4f4f4;
+  border-radius: 15px;
 }
 
 .lesConseils{
   padding: 1%;
-  border: solid;
 }
 
 .modalImage{
   width: 10%;
   height: 10%;
   max-width: 10%;
-  max-height: 10%;
-}
-.listOfPlants{
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
+  max-height: 180px;
+  float: right;
+  border-radius: 15px;
 }
 
 .imgPlant{
-  margin-top: 20%;
+  margin-top: 5%;
   width: 50%;
   height: 50%;
   max-width: 50%;
@@ -266,13 +261,33 @@ export default {
   text-align: center;
 }
 
-.divUnePlante{
-  cursor: pointer;
-  border: solid;
-  border-radius: 10%;
-  grid-row-gap: 10%; 
-  margin: 10%;
+.grid {
+    width: 100vw;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-row-gap: 15px;
+    overflow-y: scroll;
+    justify-content: center;
+    margin-top: 100px;
+}
 
+.divUnePlante {
+    width: 250px;
+    height: 140px;
+    background-color: #f4f4f4;
+    border-radius: 15px;
+    justify-self: center;
+    cursor: pointer;
+    transition: all 0.3S ease-in-out;
+    padding: 15px;
+}
+
+.imgPlant {
+    width: 100px;
+    max-height: 100px;
+    border-radius: 10px;
+    float: right;
 }
 
 .modal {
@@ -289,6 +304,19 @@ export default {
   background-color: rgba(0,0,0,0.4); 
 }
 
+textarea {
+        all: unset;
+        width: 85%;
+        height: 100px;
+        background-color: #f4f4f4;
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 12px;
+        font-family: 'Inter', sans-serif;
+    }
+
+
+
 
 .modal-content {
   position: relative;
@@ -304,6 +332,22 @@ export default {
   animation-duration: 0.4s;
   border-radius: 20px;
 }
+
+input[type='text']{
+      all: unset;
+      width:85%;
+      background-color: #f4f4f4;
+      border-radius: 5px;
+      padding: 10px;
+      font-size: 12px;
+      font-family: 'Inter', sans-serif;
+  }
+
+  label {
+        font-family: 'Inter', sans-serif;
+        font-size: 12px;
+        padding-bottom: 5px;
+    }
 
 
 @-webkit-keyframes animatetop {
@@ -339,5 +383,34 @@ export default {
     padding: 2px 16px;
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+input[type="button"]{
+  all: unset;
+  cursor: pointer;
+  color: #fff;
+  font-weight: bold;
+  height: 35px;
+  width: 150px;
+  background-color: #5EB563;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px 0px 0px 5px;
+  float: right;
+}
+
+.addConsButton{
+  cursor: pointer;
+  color: #fff;
+  font-weight: bold;
+  height: 35px;
+  width: 150px;
+  background-color: #5EB563;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px 0px 0px 5px;
+  float: right;
 }
 </style>
